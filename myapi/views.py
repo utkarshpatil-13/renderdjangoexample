@@ -18,13 +18,13 @@ def flowerPredict(request):
 	try:
 		model_loaded = pickle.load(open('static\model_saved', 'rb'))
 		#mydata=pd.read_excel('/Users/sahityasehgal/Documents/Coding/bankloan/test.xlsx')
-		# mydata=request.data
-		mydata={
-            'Sepal.Length': 6.2, 
-			'Sepal.Width' : 3.1, 
-			'Petal.Length' : 5.6,
-            'Petal.Width' : 3.1
-        }
+		mydata=request.data
+		# mydata={
+        #     'Sepal.Length': 6.2, 
+		# 	'Sepal.Width' : 3.1, 
+		# 	'Petal.Length' : 5.6,
+        #     'Petal.Width' : 3.1
+        # }
 		# mydata={
         #     "Dependants": 3,
         #     "ApplicantIncome": 4500,
