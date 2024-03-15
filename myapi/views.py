@@ -16,7 +16,7 @@ class FlowerView(viewsets.ModelViewSet):
 @api_view(["GET"])
 def flowerPredict(request):
 	try:
-		model_loaded = pickle.load(open('static\model_saved', 'rb'))
+		model_loaded = pickle.load(open('https://drive.google.com/file/d/1o0IvhhNXwGUBHJCZcCRO6wftAOY6eofV/view?usp=sharing', 'rb'))
 		#mydata=pd.read_excel('/Users/sahityasehgal/Documents/Coding/bankloan/test.xlsx')
 		mydata=request.data
 		# mydata={
