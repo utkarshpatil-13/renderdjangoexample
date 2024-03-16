@@ -7,6 +7,6 @@ router = routers.DefaultRouter()
 router.register(r'myapi', FlowerView)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('static', flowerPredict)
+    # path('', include(router.urls)),
+    path('', flowerPredict)
 ]
