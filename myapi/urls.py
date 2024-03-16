@@ -8,5 +8,5 @@ router.register(r'myapi', FlowerView)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('status/', flowerPredict)
+    path('static', flowerPredict)
 ]
