@@ -8,7 +8,6 @@ from myapi.serializers import flowerSerializers
 import pickle
 import numpy as np
 
-
 class FlowerView(viewsets.ModelViewSet):
 	queryset = flower.objects.all()
 	serializer_class = flowerSerializers
@@ -16,7 +15,7 @@ class FlowerView(viewsets.ModelViewSet):
 @api_view(["GET"])
 def flowerPredict(request):
 	try:
-		model_loaded = pickle.load(open('https://drive.google.com/file/d/1o0IvhhNXwGUBHJCZcCRO6wftAOY6eofV/view?usp=sharing', 'rb'))
+		model_loaded = pickle.load(open('static/model_saved', 'rb'))
 		#mydata=pd.read_excel('/Users/sahityasehgal/Documents/Coding/bankloan/test.xlsx')
 		mydata=request.data
 		# mydata={
