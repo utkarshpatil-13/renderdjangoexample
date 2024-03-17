@@ -54,18 +54,17 @@ class FlowerView(viewsets.ModelViewSet):
 #         return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(["GET"])
-# def vitaminPredict(request):
-#     try:
-#         model_loaded = pickle.load(open('static/vitamin_detector', 'rb'))
-#         mydata = request.data['data']
-
-#         unit = np.array(mydata).reshape(1, -1)
-#         y_pred = model_loaded.predict(unit)
-#         return JsonResponse({"prediction": y_pred.tolist()}, status=status.HTTP_200_OK)
-
-#     except Exception as e:
-#         return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+@api_view(["GET"])
+def vitaminPredict(request):
+	try:
+		model_loaded = pickle.load(open('static/vitamin_detector', 'rb'))
+		mydata=request.data['data']
+		unit=np.array(list(mydata.values()))
+		unit=unit.reshape(1,-1)
+		y_pred=model_loaded.predict(unit)
+		return JsonResponse('{}'.format(y_pred), safe=False)
+	except ValueError as e:
+		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
 	
 # @api_view(["POST"])
 # def breastCancerPredict(request):
