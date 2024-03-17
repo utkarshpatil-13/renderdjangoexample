@@ -33,7 +33,7 @@ def normalize_document(stop_words):
 @api_view(["GET"])
 def remarkSummarizer(request):
 	try:
-		DOCUMENT = re.sub(r'\n|\r', ' ', request)
+		DOCUMENT = re.sub(r'\n|\r', ' ', request.data)
 		DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
 		DOCUMENT = DOCUMENT.strip()
 
