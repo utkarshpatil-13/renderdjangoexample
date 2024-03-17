@@ -6,13 +6,13 @@ from myapi.views import breastCancerPredict
 from myapi.views import vitaminDetectorPredict
 from myapi.views import remarkSummarizer
 
-router = routers.DefaultRouter()
-router.register(r'myapi', FlowerView)
+# router = routers.DefaultRouter()
+# router.register(r'myapi', FlowerView)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('flower/', flowerPredict),
+    # path('', include(router.urls)),
+    # path('flower/', flowerPredict),
     path('vitamin/', vitaminDetectorPredict),
-    path('breastCancer/', breastCancerPredict),
+    path('', breastCancerPredict),
     path('remarksum/', remarkSummarizer)
 ]
