@@ -30,12 +30,9 @@ def normalize_document(stop_words):
 	doc = ' '.join(filtered_tokens)
 	return doc
 
-@api_view(["POST"])
+@api_view(["GET"])
 def remarkSummarizer(request):
     try:
-        if 'text' not in request.data:
-            return Response("Text data not provided", status=status.HTTP_400_BAD_REQUEST)
-
         DOCUMENT = request.data['text']
         DOCUMENT = re.sub(r'\n|\r', ' ', DOCUMENT)
         DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
@@ -57,12 +54,9 @@ def remarkSummarizer(request):
         return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 def vitaminPredict(request):
     try:
-        if 'data' not in request.data:
-            return Response("Data not provided", status=status.HTTP_400_BAD_REQUEST)
-
         model_loaded = pickle.load(open('static/vitamin_detector', 'rb'))
         mydata = request.data['data']
 
@@ -73,12 +67,25 @@ def vitaminPredict(request):
     except Exception as e:
         return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 	
-@api_view(["POST"])
+# @api_view(["POST"])
+# def breastCancerPredict(request):
+# 	try:
+# 		model_loaded = pickle.load(open('static/BreastCancer', 'rb'))
+# 		mydata=request.data
+
+# 		unit=np.array(list(mydata.values()))
+# 		unit=unit.reshape(1,-1)
+# 		y_pred=model_loaded.predict(unit)
+# 		return JsonResponse('{}'.format(y_pred), safe=False)
+# 	except ValueError as e:
+# 		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
+      
+
+@api_view(["GET"])
 def breastCancerPredict(request):
 	try:
 		model_loaded = pickle.load(open('static/BreastCancer', 'rb'))
 		mydata=request.data
-
 		unit=np.array(list(mydata.values()))
 		unit=unit.reshape(1,-1)
 		y_pred=model_loaded.predict(unit)
