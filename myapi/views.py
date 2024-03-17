@@ -32,22 +32,30 @@ def normalize_document(stop_words):
 
 @api_view(["GET"])
 def remarkSummarizer(request):
-	try:
-		DOCUMENT = re.sub(r'\n|\r', ' ', request.data)
-		DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
-		DOCUMENT = DOCUMENT.strip()
+    try:
+        if 'text' not in request.data:
+            return Response("Text data not provided", status=status.HTTP_400_BAD_REQUEST)
 
-		sentences = nltk.sent_tokenize(DOCUMENT)
-		len(sentences)
+        DOCUMENT = request.data['text']
+        DOCUMENT = re.sub(r'\n|\r', ' ', DOCUMENT)
+        DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
+        DOCUMENT = DOCUMENT.strip()
 
-		stop_words = nltk.corpus.stopwords.words('english')
+        sentences = nltk.sent_tokenize(DOCUMENT)
+        num_sentences = len(sentences)
 
-		normalize_corpus = np.vectorize(normalize_document(stop_words))
+        stop_words = nltk.corpus.stopwords.words('english')
 
-		norm_sentences = normalize_corpus(sentences)
-		norm_sentences[:3]
-	except ValueError as e:
-		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
+        # Assuming normalize_document is a function that takes in stop words
+        normalize_corpus = np.vectorize(normalize_document(stop_words))
+
+        norm_sentences = normalize_corpus(sentences)
+        # Do something with norm_sentences
+        return Response("Success", status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["GET"])
 def vitaminPredict(request):
