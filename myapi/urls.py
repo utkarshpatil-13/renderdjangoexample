@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from myapi.views import FlowerView, flowerPredict, vitaminPredict, breastCancerPredict, remarkSummarizer
+from myapi.views import FlowerView, flowerPredict
+from myapi.views import breastCancerPredict
 
 router = routers.DefaultRouter()
 router.register(r'myapi', FlowerView)
