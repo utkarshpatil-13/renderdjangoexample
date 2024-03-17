@@ -11,8 +11,8 @@ from myapi.views import remarkSummarizer
 
 urlpatterns = [
     # path('', include(router.urls)),
-    # path('flower/', flowerPredict),
-    # path('vitamin/', vitaminDetectorPredict),
-    path('', breastCancerPredict),
-    # path('remarksum/', remarkSummarizer)
+    path('flower/', flowerPredict),
+    path('vitamin/', vitaminDetectorPredict),
+    path('breast/', breastCancerPredict),
+    path('remarksum/', remarkSummarizer)
 ]

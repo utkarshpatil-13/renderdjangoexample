@@ -17,23 +17,23 @@ class FlowerView(viewsets.ModelViewSet):
 	serializer_class = flowerSerializers
 
 
-def normalize_document(stop_words):
-		# lower case and remove special characters\whitespaces
-	doc = re.sub(r'[^a-zA-Z\s]', '', doc, re.I|re.A)
-	doc = doc.lower()
-	doc = doc.strip()
-	# tokenize document
-	tokens = nltk.word_tokenize(doc)
-	# filter stopwords out of document
-	filtered_tokens = [token for token in tokens if token not in stop_words]
-	# re-create document from filtered tokens
-	doc = ' '.join(filtered_tokens)
-	return doc
+def normalize_document(doc, stop_words):
+    # lower case and remove special characters\whitespaces
+    doc = re.sub(r'[^a-zA-Z\s]', '', doc, re.I|re.A)
+    doc = doc.lower()
+    doc = doc.strip()
+    # tokenize document
+    tokens = nltk.word_tokenize(doc)
+    # filter stopwords out of document
+    filtered_tokens = [token for token in tokens if token not in stop_words]
+    # re-create document from filtered tokens
+    doc = ' '.join(filtered_tokens)
+    return doc
 
 @api_view(["GET"])
 def remarkSummarizer(request):
     try:
-        DOCUMENT = request.data['text']
+        DOCUMENT = request.data['data']  # Assuming 'data' is the key in the request body
         DOCUMENT = re.sub(r'\n|\r', ' ', DOCUMENT)
         DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
         DOCUMENT = DOCUMENT.strip()
@@ -43,12 +43,12 @@ def remarkSummarizer(request):
 
         stop_words = nltk.corpus.stopwords.words('english')
 
-        # Assuming normalize_document is a function that takes in stop words
-        normalize_corpus = np.vectorize(normalize_document(stop_words))
-
-        norm_sentences = normalize_corpus(sentences)
+        # Call normalize_document function for each sentence
+        normalize_corpus = np.vectorize(normalize_document)
+        norm_sentences = normalize_corpus(sentences, stop_words)
+        
         # Do something with norm_sentences
-        return Response("Success", status=status.HTTP_200_OK)
+        return Response(norm_sentences[0], status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
@@ -130,7 +130,8 @@ def breastCancerPredict(request):
 def vitaminDetectorPredict(request):
 	try:
 		model_loaded = pickle.load(open('static/vitamin_detector', 'rb'))
-		mydata=request.data['data']
+		print(request.data)
+		mydata=request.data
 		unit=np.array(list(mydata.values()))
 		unit=unit.reshape(1,-1)
 		y_pred=model_loaded.predict(unit)
