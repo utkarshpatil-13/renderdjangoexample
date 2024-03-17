@@ -7,11 +7,47 @@ from myapi.models import flower
 from myapi.serializers import flowerSerializers
 import pickle
 import numpy as np
+import nltk
+import re
+nltk.download('punkt')
+nltk.download('stopwords')
 
 class FlowerView(viewsets.ModelViewSet):
 	queryset = flower.objects.all()
 	serializer_class = flowerSerializers
 
+
+def normalize_document(stop_words):
+		# lower case and remove special characters\whitespaces
+	doc = re.sub(r'[^a-zA-Z\s]', '', doc, re.I|re.A)
+	doc = doc.lower()
+	doc = doc.strip()
+	# tokenize document
+	tokens = nltk.word_tokenize(doc)
+	# filter stopwords out of document
+	filtered_tokens = [token for token in tokens if token not in stop_words]
+	# re-create document from filtered tokens
+	doc = ' '.join(filtered_tokens)
+	return doc
+
+@api_view(["GET"])
+def remarkSummarizer(request):
+	try:
+		DOCUMENT = re.sub(r'\n|\r', ' ', request)
+		DOCUMENT = re.sub(r' +', ' ', DOCUMENT)
+		DOCUMENT = DOCUMENT.strip()
+
+		sentences = nltk.sent_tokenize(DOCUMENT)
+		len(sentences)
+
+		stop_words = nltk.corpus.stopwords.words('english')
+
+		normalize_corpus = np.vectorize(normalize_document(stop_words))
+
+		norm_sentences = normalize_corpus(sentences)
+		norm_sentences[:3]
+	except ValueError as e:
+		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
 def vitaminPredict(request):
