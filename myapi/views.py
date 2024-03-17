@@ -11,6 +11,33 @@ import numpy as np
 class FlowerView(viewsets.ModelViewSet):
 	queryset = flower.objects.all()
 	serializer_class = flowerSerializers
+
+
+@api_view(["GET"])
+def vitaminPredict(request):
+	try:
+		model_loaded = pickle.load(open('static/vitamin_detector', 'rb'))
+		mydata=request.data
+
+		unit=np.array(list(mydata.values()))
+		unit=unit.reshape(1,-1)
+		y_pred=model_loaded.predict(unit)
+		return JsonResponse('{}'.format(y_pred), safe=False)
+	except ValueError as e:
+		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
+	
+@api_view(["GET"])
+def breastCancerPredict(request):
+	try:
+		model_loaded = pickle.load(open('static/breast_cancer', 'rb'))
+		mydata=request.data
+
+		unit=np.array(list(mydata.values()))
+		unit=unit.reshape(1,-1)
+		y_pred=model_loaded.predict(unit)
+		return JsonResponse('{}'.format(y_pred), safe=False)
+	except ValueError as e:
+		return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
 		
 @api_view(["GET"])
 def flowerPredict(request):
