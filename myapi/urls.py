@@ -8,7 +8,7 @@ router.register(r'myapi', FlowerView)
 
 urlpatterns = [
     # path('', include(router.urls)),
-    path('flower/', flowerPredict),
+    # path('flower/', flowerPredict),
     path('vitamin/', vitaminPredict),
     path('breastCancer/', breastCancerPredict),
     path('remarksum/', remarkSummarizer)

@@ -65,7 +65,7 @@ def vitaminPredict(request):
 @api_view(["GET"])
 def breastCancerPredict(request):
 	try:
-		model_loaded = pickle.load(open('static/breast_cancer', 'rb'))
+		model_loaded = pickle.load(open('static/BreastCancer', 'rb'))
 		mydata=request.data
 
 		unit=np.array(list(mydata.values()))
